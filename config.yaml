@@ -1,0 +1,7 @@
+endpoint: "http://192.168.102.129:8000/api/v1/ingest"
+api_key: "Q835Xf1ug0hQvfgz0gHfLDUO1Ph5t91sCbVUMq3SsMM"
+interval_seconds: 300   # 5 minutes
+timeout_seconds: 10
+max_retries: 6
+backoff_base: 2
+jitter: 0.5

@@ -1,0 +1,19 @@
+[Unit]
+Description=Machine metrics agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/local/bin/agent.py
+Restart=on-failure
+RestartSec=10
+User=root
+
+# Ou créez un user system (recommended) et ajustez permissions
+#User=machineagent
+#RuntimeDirectory=machine-agent
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
