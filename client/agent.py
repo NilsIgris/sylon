@@ -23,7 +23,7 @@ DEFAULT_CONFIG = {
     "api_key": "NULL",
     "interval_seconds": 300,
     # Only remote_code_url remains for self-update capability
-    "remote_code_url": "http://example.com/latest_agent.py",
+    "remote_code_url": "https://raw.githubusercontent.com/NilsIgris/sylon/refs/heads/nils/client/agent.py",
     "update_interval_seconds" : 3000,
     "timeout_seconds": 10,
     "max_retries": 5,
