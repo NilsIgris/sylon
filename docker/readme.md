@@ -1,0 +1,1 @@
+Ici je tente de conteneuriser des trucs pour le projet genre du CI/CD
