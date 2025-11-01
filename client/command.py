@@ -18,7 +18,6 @@ def update_agent_code(cfg, script_path):
         logger.debug("Remote agent code URL not configured. Skipping code update.")
         return False
 
-    logger.warning("Attempting to self-update agent code from: %s", remote_url)
     timeout = cfg.get("timeout_seconds", 10)
 
     try:
@@ -59,7 +58,6 @@ def update_command_code(cfg, script_path):
         logger.debug("Remote commands file URL not configured. Skipping commands file update.")
         return False
 
-    logger.warning("Attempting to self-update commands file from: %s", remote__command_url)
     timeout = cfg.get("timeout_seconds", 10)
 
     try:
