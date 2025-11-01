@@ -60,7 +60,6 @@ def main():
     
     # Determine the absolute path of the running script (used for self-update)
     SCRIPT_PATH = os.path.abspath(sys.argv[0])
-    logger.info("Running script path: %s", SCRIPT_PATH)
 
     # Intervals are based on the locally loaded config
     metric_interval = int(cfg.get("interval_seconds", 300))
@@ -70,7 +69,7 @@ def main():
     # Forces an initial check for code update on startup
     last_code_update_check = time.time() - update_interval 
 
-    logger.info("Starting agent; sending to %s every %s seconds, checking for CODE updates every %s seconds", 
+    logger.info("Starting agent; sending to %s every %s seconds, checking for updates every %s seconds", 
                 cfg["endpoint"], metric_interval, update_interval)
 
     while True:
@@ -85,7 +84,7 @@ def main():
                 logger.info("Local agent version is %s" , Version)
             
             if command.update_command_code(cfg, SCRIPT_PATH):
-                logger.info("Update available for command")
+                logger.info("Update available for commands file")
                 logger.info("Local agent version is %s" , command.Version)
 
             last_code_update_check = current_time

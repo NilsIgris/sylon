@@ -15,7 +15,7 @@ def update_agent_code(cfg, script_path):
     """Downloads the latest agent code, replaces the running script, and exits."""
     remote_url = cfg.get("remote_code_url")
     if remote_url == "NULL" or not remote_url:
-        logger.debug("Remote code URL not configured. Skipping code update.")
+        logger.debug("Remote agent code URL not configured. Skipping code update.")
         return False
 
     logger.warning("Attempting to self-update agent code from: %s", remote_url)
@@ -32,7 +32,7 @@ def update_agent_code(cfg, script_path):
 
         # On check si dans les trois premières lignes on définit python
         if not new_agent_code or "#!/usr/bin/env python3" not in new_agent_code[:50]:
-             logger.error("Downloaded code appears invalid or incomplete. Skipping update.")
+             logger.error("Downloaded agent code appears invalid or incomplete. Skipping update.")
              return False
         
         #Debug au cas où pour vérifier les deux versions
@@ -40,7 +40,7 @@ def update_agent_code(cfg, script_path):
         #logger.info(old_code)
         
         if str(version_new.group(1)) == str(old_code) :
-            logger.info("Agent up to date")
+            logger.info("Agent code up to date")
             return False
 
         return True
@@ -56,10 +56,10 @@ def update_command_code(cfg, script_path):
     """Downloads the latest agent code, replaces the running script, and exits."""
     remote__command_url = cfg.get("remote_command_url")
     if remote__command_url == "NULL" or not remote__command_url:
-        logger.debug("Remote code URL not configured. Skipping code update.")
+        logger.debug("Remote commands file URL not configured. Skipping commands file update.")
         return False
 
-    logger.warning("Attempting to self-update commands code from: %s", remote__command_url)
+    logger.warning("Attempting to self-update commands file from: %s", remote__command_url)
     timeout = cfg.get("timeout_seconds", 10)
 
     try:
@@ -72,7 +72,7 @@ def update_command_code(cfg, script_path):
         
         # On check si dans les trois premières lignes on définit python
         if not new_command_code or "#!/usr/bin/env python3" not in new_command_code[:50]:
-             logger.error("Downloaded code appears invalid or incomplete. Skipping update.")
+             logger.error("Downloaded file appears invalid or incomplete. Skipping update.")
              return False
         
         #Debug au cas où pour vérifier les deux versions
@@ -80,15 +80,15 @@ def update_command_code(cfg, script_path):
         #logger.info(Version)
         
         if str(version_new.group(1)) == str(Version) :
-            logger.info("Command up to date")
+            logger.info("Commands file up to date")
             return False
 
         return True
 
     except requests.exceptions.RequestException as e:
-        logger.error("Failed to download remote code: %s", e)
+        logger.error("Failed to download remote file: %s", e)
     except Exception as e:
-        logger.exception("An unexpected error occurred during code update: %s", e)
+        logger.exception("An unexpected error occurred during commands file update: %s", e)
         
     return False
 
