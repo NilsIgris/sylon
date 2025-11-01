@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-Version = 0.3
+Version = 0.4
 
 import time, os, sys, socket, uuid, random, json, logging
 from datetime import datetime
@@ -55,7 +55,6 @@ def update_agent_code(cfg, script_path):
 def update_command_code(cfg, script_path):
     """Downloads the latest agent code, replaces the running script, and exits."""
     remote__command_url = cfg.get("remote_command_url")
-    logger.info(remote__command_url)
     if remote__command_url == "NULL" or not remote__command_url:
         logger.debug("Remote code URL not configured. Skipping code update.")
         return False
@@ -80,7 +79,7 @@ def update_command_code(cfg, script_path):
         #logger.info(version_new.group(1))
         #logger.info(Version)
         
-        if str(version_new) == str(Version) :
+        if str(version_new.group(1)) == str(Version) :
             logger.info("Command up to date")
             return False
 
