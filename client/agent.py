@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# Version 0.1
 
 import time, os, sys, socket, uuid, random, json, logging
 from datetime import datetime
@@ -48,7 +49,6 @@ def load_config(path=CONFIG_FILE_PATH):
     return cfg
 
 
-
 # --- MAIN LOOP (Updated) ---
 
 def main():
@@ -81,8 +81,8 @@ def main():
             if command.update_agent_code(cfg, SCRIPT_PATH):
                 # If update_agent_code is successful, it calls sys.exit(0)
                 # and this loop iteration will stop, triggering a restart.
-                sys.exit(0) 
-                
+                logger.critical("Update available")
+
             last_code_update_check = current_time
 
         # 2. Collect and send metrics

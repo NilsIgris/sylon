@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# Version 0.1
 
 import time, os, sys, socket, uuid, random, json, logging
 from datetime import datetime
