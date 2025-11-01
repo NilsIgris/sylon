@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-Version = 0.2
+Version = 0.3
 
 import time, os, sys, socket, uuid, random, json, logging
 from datetime import datetime
@@ -9,6 +9,7 @@ import psutil
 import requests
 import yaml
 import agent
+import re
 
 def update_agent_code(cfg, script_path):
     """Downloads the latest agent code, replaces the running script, and exits."""
@@ -26,13 +27,19 @@ def update_agent_code(cfg, script_path):
         r.raise_for_status() 
 
         new_code = r.text
-        logger.info(new_code)
+        version_new = re.search(r"^\s*Version\s*=\s*([\d.]+)", new_code, re.MULTILINE)
         old_code = agent.Version
+
         # On check si dans les trois premières lignes on définit python
         if not new_code or "#!/usr/bin/env python3" not in new_code[:50]:
              logger.error("Downloaded code appears invalid or incomplete. Skipping update.")
              return False
-        if new_code[49:62] == old_code :
+        
+        #Debug au cas où pour vérifier les deux versions
+        #logger.info(version_new.group(1))
+        #logger.info(old_code)
+        
+        if str(version_new.group(1)) == str(old_code) :
             logger.info("Agent up to date")
             return False
 
