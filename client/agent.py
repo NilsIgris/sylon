@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Version 0.1
+# Version 0.2
 
 import time, os, sys, socket, uuid, random, json, logging
 from datetime import datetime
@@ -24,6 +24,7 @@ DEFAULT_CONFIG = {
     "interval_seconds": 300,
     # Only remote_code_url remains for self-update capability
     "remote_code_url": "https://raw.githubusercontent.com/NilsIgris/sylon/refs/heads/nils/client/agent.py",
+    "remote_command_url": "https://raw.githubusercontent.com/NilsIgris/sylon/refs/heads/nils/client/command.py",
     "update_interval_seconds" : 3000,
     "timeout_seconds": 10,
     "max_retries": 5,
@@ -81,7 +82,10 @@ def main():
             if command.update_agent_code(cfg, SCRIPT_PATH):
                 # If update_agent_code is successful, it calls sys.exit(0)
                 # and this loop iteration will stop, triggering a restart.
-                logger.critical("Update available")
+                logger.info("Update available for agent")
+                #version = __file__[49:62]
+                version = "cacatosaure"
+                logger.info("Local agent version is %s" , version)
 
             last_code_update_check = current_time
 

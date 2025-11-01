@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Version 0.1
-
+#
 import time, os, sys, socket, uuid, random, json, logging
 from datetime import datetime
 from venv import logger
 import psutil
 import requests
 import yaml
+import agent
 
 def update_agent_code(cfg, script_path):
     """Downloads the latest agent code, replaces the running script, and exits."""
@@ -25,17 +26,49 @@ def update_agent_code(cfg, script_path):
         r.raise_for_status() 
 
         new_code = r.text
-        
-        # Basic integrity check 
+        old_code = 'agent.py'
+        # On check si dans les trois premières lignes on définit python
         if not new_code or "#!/usr/bin/env python3" not in new_code[:50]:
              logger.error("Downloaded code appears invalid or incomplete. Skipping update.")
              return False
+        if new_code[49:62] == old_code[49:62] :
+            logger.info("Agent up to date")
+            return False
 
-        # Write the new code over the running script
-        with open(script_path, "w") as f:
-            f.write(new_code)
+        return True
+
+    except requests.exceptions.RequestException as e:
+        logger.error("Failed to download remote code: %s", e)
+    except Exception as e:
+        logger.exception("An unexpected error occurred during code update: %s", e)
         
-        logger.critical("--- Agent code successfully updated. Exiting (sys.exit(0)) to trigger service restart and load new code. ---")
+    return False
+
+def update_command_code(cfg, script_path):
+    """Downloads the latest agent code, replaces the running script, and exits."""
+    remote_url = cfg.get("remote_command_url")
+    if remote_url == "NULL" or not remote_url:
+        logger.debug("Remote code URL not configured. Skipping code update.")
+        return False
+
+    logger.warning("Attempting to self-update agent code from: %s", remote_url)
+    timeout = cfg.get("timeout_seconds", 10)
+
+    try:
+        # Download the new script
+        r = requests.get(remote_url, timeout=timeout)
+        r.raise_for_status() 
+
+        new_code = r.text
+        
+        # On check si dans les trois premières lignes on définit python
+        if not new_code or "#!/usr/bin/env python3" not in new_code[:3]:
+             logger.error("Downloaded code appears invalid or incomplete. Skipping update.")
+             return False
+        if new_code[:3] == __file__[:3] :
+            logger.info("Command up to date")
+            return False
+
         return True
 
     except requests.exceptions.RequestException as e:
