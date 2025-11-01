@@ -26,12 +26,12 @@ def update_agent_code(cfg, script_path):
         r = requests.get(remote_url, timeout=timeout)
         r.raise_for_status() 
 
-        new_code = r.text
-        version_new = re.search(r"^\s*Version\s*=\s*([\d.]+)", new_code, re.MULTILINE)
+        new_agent_code = r.text
+        version_new = re.search(r"^\s*Version\s*=\s*([\d.]+)", new_agent_code, re.MULTILINE)
         old_code = agent.Version
 
         # On check si dans les trois premières lignes on définit python
-        if not new_code or "#!/usr/bin/env python3" not in new_code[:50]:
+        if not new_agent_code or "#!/usr/bin/env python3" not in new_agent_code[:50]:
              logger.error("Downloaded code appears invalid or incomplete. Skipping update.")
              return False
         
@@ -54,26 +54,33 @@ def update_agent_code(cfg, script_path):
 
 def update_command_code(cfg, script_path):
     """Downloads the latest agent code, replaces the running script, and exits."""
-    remote_url = cfg.get("remote_command_url")
-    if remote_url == "NULL" or not remote_url:
+    remote__command_url = cfg.get("remote_command_url")
+    logger.info(remote__command_url)
+    if remote__command_url == "NULL" or not remote__command_url:
         logger.debug("Remote code URL not configured. Skipping code update.")
         return False
 
-    logger.warning("Attempting to self-update agent code from: %s", remote_url)
+    logger.warning("Attempting to self-update commands code from: %s", remote__command_url)
     timeout = cfg.get("timeout_seconds", 10)
 
     try:
         # Download the new script
-        r = requests.get(remote_url, timeout=timeout)
+        r = requests.get(remote__command_url, timeout=timeout)
         r.raise_for_status() 
 
-        new_code = r.text
+        new_command_code = r.text
+        version_new = re.search(r"^\s*Version\s*=\s*([\d.]+)", new_command_code, re.MULTILINE)
         
         # On check si dans les trois premières lignes on définit python
-        if not new_code or "#!/usr/bin/env python3" not in new_code[:3]:
+        if not new_command_code or "#!/usr/bin/env python3" not in new_command_code[:50]:
              logger.error("Downloaded code appears invalid or incomplete. Skipping update.")
              return False
-        if new_code[:3] == __file__[:3] :
+        
+        #Debug au cas où pour vérifier les deux versions
+        #logger.info(version_new.group(1))
+        #logger.info(Version)
+        
+        if str(version_new) == str(Version) :
             logger.info("Command up to date")
             return False
 

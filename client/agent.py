@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-Version = 0.2
+Version = 0.3
 
 import time, os, sys, socket, uuid, random, json, logging
 from datetime import datetime
 import psutil
 import requests
 import yaml
+import re
 
 import command
 
@@ -81,9 +82,11 @@ def main():
             # Check and apply code update
             if command.update_agent_code(cfg, SCRIPT_PATH):
                 logger.info("Update available for agent")
-                version = __file__
-                #version = version[49:62]
-                logger.info("Local agent version is %s" , version[49:62])
+                logger.info("Local agent version is %s" , Version)
+            
+            if command.update_command_code(cfg, SCRIPT_PATH):
+                logger.info("Update available for command")
+                logger.info("Local agent version is %s" , command.Version)
 
             last_code_update_check = current_time
 
