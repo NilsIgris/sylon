@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Version 0.1
-#
+Version = 0.2
+
 import time, os, sys, socket, uuid, random, json, logging
 from datetime import datetime
 from venv import logger
@@ -26,12 +26,13 @@ def update_agent_code(cfg, script_path):
         r.raise_for_status() 
 
         new_code = r.text
-        old_code = 'agent.py'
+        logger.info(new_code)
+        old_code = agent.Version
         # On check si dans les trois premières lignes on définit python
         if not new_code or "#!/usr/bin/env python3" not in new_code[:50]:
              logger.error("Downloaded code appears invalid or incomplete. Skipping update.")
              return False
-        if new_code[49:62] == old_code[49:62] :
+        if new_code[49:62] == old_code :
             logger.info("Agent up to date")
             return False
 
