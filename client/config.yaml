@@ -1,7 +1,19 @@
-endpoint: "http://192.168.102.129:8000/api/v1/ingest"
-api_key: "Q835Xf1ug0hQvfgz0gHfLDUO1Ph5t91sCbVUMq3SsMM"
-interval_seconds: 300   # 5 minutes
-timeout_seconds: 10
-max_retries: 6
-backoff_base: 2
-jitter: 0.5
+    # Symoni Agent configuration file
+    # This is the personnal one, the agent has another one that's default
+
+    
+  # Database endpoint
+    "endpoint": "NULL"
+    "api_key": "NULL"
+    "interval_seconds": 300
+
+    # Remote URL to update the code if you host it
+    "remote_code_url": "https://raw.githubusercontent.com/NilsIgris/sylon/refs/heads/nils/client/agent.py"
+    "remote_command_url": "https://raw.githubusercontent.com/NilsIgris/sylon/refs/heads/nils/client/command.py"
+    "update_interval_seconds" : 3000
+
+    # Other configuration parameters
+    "timeout_seconds": 10
+    "max_retries": 5
+    "backoff_base": 2
+    "jitter": 0.3
